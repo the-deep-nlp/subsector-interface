@@ -6,6 +6,7 @@ import app
 import constants
 import ast
 from guidelines import guidelines
+from time import sleep
 
 st.set_page_config(layout="wide")
 
@@ -108,6 +109,7 @@ class AddEntryTag():
                     st.info("Database is updated.")
                 except Exception as e:
                     st.error(f"Failed to update database. {e}")
+                sleep(1)
                 st.experimental_rerun()
         else:
             st.info("No task found or All complete")
