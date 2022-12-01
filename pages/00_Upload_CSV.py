@@ -3,6 +3,10 @@ import pandas as pd
 import app
 import db_orm
 from datetime import date
+from guidelines import guidelines
+
+
+guidelines() # Load Guidlines in the sidebar
 
 uploaded_file = st.file_uploader("Choose a csv file")
 
@@ -12,12 +16,12 @@ if uploaded_file is not None:
     df["created_date"] = date.today()
     df["complete"] = False
     st.dataframe(df)
-
-    records_updated =df.to_sql(
+    df.reset_index(drop=True, inplace=True)
+    records_updated = df.to_sql(
         "Sectors",
         con=app.engine,
         if_exists="append",
-        index=True,
+        index=False,
         index_label="id"
     )
 
