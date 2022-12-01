@@ -36,7 +36,8 @@ class EditEntryTag():
         sa_table = sa.Table("Sectors", sa.MetaData(), autoload_with=app.engine)
         sa_query = sa.select([sa_table]).where(
             sa_table.c.assigned_to==selected_user_id,
-            sa_table.c.entry_id==selected_entry_id)
+            sa_table.c.entry_id==selected_entry_id,
+            sa_table.c.complete==True)
         df = pd.read_sql_query(sa_query, app.engine)
 
         # to fix the skipped rows
