@@ -22,7 +22,7 @@ class Sectors(Base):
     subsubsector = Column(String, nullable=True)
     comment = Column(String, nullable=True)
     created_date = Column(Date, nullable=True)
-    modified_date = Column(Date, nullable=True)
+    last_tagged_date = Column(Date, nullable=True)
     complete = Column(Boolean)
     assigned_to = Column(Integer, ForeignKey("Users.id"))
 

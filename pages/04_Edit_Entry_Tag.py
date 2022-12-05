@@ -95,7 +95,7 @@ class EditEntryTag():
                             "subsubsector": str(self.subsubsector),
                             "comment": str(self.comment),
                             "complete": True,
-                            "modified_date": date.today()
+                            "last_tagged_date": date.today()
                         }
                     )
                     app.session.commit()
