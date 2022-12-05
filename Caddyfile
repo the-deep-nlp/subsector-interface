@@ -1,0 +1,9 @@
+{
+    email dev@thedeep.io
+}
+
+sectortagging.labs.thedeep.io {
+    reverse_proxy core_api:8501 {
+        header_up X-Forwarded-Proto https
+    }
+}

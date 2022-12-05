@@ -1,3 +1,4 @@
+import os
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, String, Integer, Float, Boolean, Date
 from sqlalchemy.ext.declarative import declarative_base
@@ -26,14 +27,12 @@ class Sectors(Base):
     complete = Column(Boolean)
     assigned_to = Column(Integer, ForeignKey("Users.id"))
 
-# add user as foreign key in sectors
-
 if __name__ == "__main__":
-    user = "postgres"
-    passwd = "postgres"
-    host = "localhost"
-    port = 5432
-    db = "postgres"
+    user = os.environ.get("POSTGRES_USER")
+    passwd = os.environ.get("POSTGRES_PASSWORD")
+    host = os.environ.get("POSTGRES_HOST", "localhost")
+    port = os.environ.get("POSTGRES_PORT", 5432)
+    db = os.environ.get("POSTGRES_DB")
 
     url = f"postgresql://{user}:{passwd}@{host}:{port}/{db}"
     engine = create_engine(url)
