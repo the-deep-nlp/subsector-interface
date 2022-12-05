@@ -23,7 +23,7 @@ class ViewEntryTag():
 
     def _get_list_of_users(self):
         df = pd.read_sql_table('Users', app.engine)
-        return df['name'].to_list() + ["All"], self._get_mapping(df)
+        return  ["All"] + df['name'].to_list(), self._get_mapping(df)
     
     @st.cache
     def generate_csv(self, df):
