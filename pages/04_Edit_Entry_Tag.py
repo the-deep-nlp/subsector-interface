@@ -8,6 +8,7 @@ import ast
 from datetime import date
 from guidelines import guidelines
 from time import sleep
+from datetime import date
 
 st.set_page_config(layout="wide")
 
@@ -57,45 +58,89 @@ class EditEntryTag():
             subsubsector_default = ast.literal_eval(df.iloc[0].subsubsector)
         except Exception as e:
             subsubsector_default = None
-
+        
+        try:
+            subsubsubsector_default = ast.literal_eval(df.iloc[0].subsubsubsector)
+        except Exception as e:
+            subsubsubsector_default = None
+        
+        try:
+            subsubsubsubsector_default = ast.literal_eval(df.iloc[0].subsubsubsubsector)
+        except Exception as e:
+            subsubsubsubsector_default = None
+        
         if len(df):
-            form = st.form('form', clear_on_submit=True)
-            self.id = form.text_input("ID", value=df.iloc[0].id, disabled=True)
-            self.excerpt = form.text_area("Excerpt", value=df.iloc[0].excerpt, disabled=True)
+            self.id = st.text_input("Entry Id", value=df.iloc[0].entry_id, disabled=True)
+            self.excerpt = st.text_area("Excerpt", value=df.iloc[0].excerpt, disabled=True)
             
-            self.sector = form.multiselect(
+            # Sector
+            self.sector = st.multiselect(
                 "Sector",
-                options=constants.sector_lst,
+                options=constants.data_df["sector"].unique().tolist(),
                 default=sector_default
             )
 
-            self.subsector = form.multiselect(
+            df_join_1 = constants.data_df[constants.data_df["sector"].isin(self.sector)][["sector", "subsector"]]
+            df_join_1["processed_subsector"] = df_join_1["sector"].astype(str) + "->" + df_join_1["subsector"].astype(str) #join_df[["sector", "subsector"]].apply("-".join, axis=1)
+
+            # Sub sector
+            self.sub_sector = st.multiselect(
                 "SubSector",
-                options=constants.subsector_lst,
+                options=df_join_1["processed_subsector"].unique().tolist(), #constants.data_df[constants.data_df["sector"].isin(self.sector)]["subsector"].unique().tolist(),
                 default=subsector_default
             )
-            
-            self.subsubsector = form.multiselect(
+
+            sub_sector_lst = list(map(lambda x: x.split("->")[-1], self.sub_sector))
+            df_join_2 = constants.data_df[constants.data_df["subsector"].isin(sub_sector_lst)][["sector", "subsector", "subsubsector"]]
+            df_join_2["processed_sub_sub_sector"] = df_join_2["sector"].astype(str) + "->" + df_join_2["subsector"].astype(str) + "->" + df_join_2["subsubsector"].astype(str)
+
+            # Sub sub sector
+            self.sub_sub_sector = st.multiselect(
                 "SubSubSector",
-                options=constants.subsubsector_lst,
+                options=df_join_2["processed_sub_sub_sector"].unique().tolist(),  #constants.data_df[constants.data_df["subsector"].isin(self.subsector)]["subsubsector"].unique().tolist(),
                 default=subsubsector_default
             )
-            
-            self.comment = form.text_area("Comment", value=df.iloc[0].comment)
 
-            submit_btn = form.form_submit_button(label="Submit")
-            if submit_btn:
+            # Sub sub sub sector
+            sub_sub_sector_lst = list(map(lambda x: x.split("->")[-1], self.sub_sub_sector))
+            df_join_3 = constants.data_df[constants.data_df["subsubsector"].isin(sub_sub_sector_lst)][["sector", "subsector", "subsubsector", "subsubsubsector"]]
+            df_join_3["processed_sub_sub_sub_sector"] = df_join_3["sector"].astype(str) + "->" + df_join_3["subsector"].astype(str) + "->" + df_join_3["subsubsector"].astype(str) + "->" + df_join_3["subsubsubsector"].astype(str)
+
+            self.sub_sub_sub_sector = st.multiselect(
+                "SubSubSubSector",
+                options=df_join_3["processed_sub_sub_sub_sector"].unique().tolist(),
+                default=subsubsubsector_default
+            )
+
+            # Sub sub sub sub sector
+            sub_sub_sub_sector_lst = list(map(lambda x: x.split("->")[-1], self.sub_sub_sub_sector))
+            df_join_4 = constants.data_df[constants.data_df["subsubsubsector"].isin(sub_sub_sub_sector_lst)][["sector", "subsector", "subsubsector", "subsubsubsector", "subsubsubsubsector"]]
+            df_join_4["processed_sub_sub_sub_sub_sector"] = df_join_4["sector"].astype(str) + "->" + df_join_4["subsector"].astype(str) + "->" + df_join_4["subsubsector"].astype(str) + "->" + df_join_4["subsubsubsector"].astype(str) + "->" + df_join_4["subsubsubsubsector"].astype(str)
+
+            self.sub_sub_sub_sub_sector = st.multiselect(
+                "SubSubSubSubSector",
+                options=df_join_4["processed_sub_sub_sub_sub_sector"].unique().tolist(),
+                default=subsubsubsubsector_default
+            )
+
+            self.comment = st.text_area("Comment", value=df.iloc[0].comment)
+
+            self.submit_btn = st.button(label="Submit")
+
+            if self.submit_btn:
                 try:
                     app.session.query(db_orm.Sectors).filter(
                         db_orm.Sectors.entry_id==int(df.iloc[0].entry_id)
                     ).update(
                         {
                             "sector": str(self.sector),
-                            "subsector": str(self.subsector),
-                            "subsubsector": str(self.subsubsector),
+                            "subsector": str(self.sub_sector),
+                            "subsubsector": str(self.sub_sub_sector),
+                            "subsubsubsector": str(self.sub_sub_sub_sector),
+                            "subsubsubsubsector": str(self.sub_sub_sub_sub_sector),
+                            "last_tagged_date": date.today(),
                             "comment": str(self.comment),
-                            "complete": True,
-                            "last_tagged_date": date.today()
+                            "complete": True
                         }
                     )
                     app.session.commit()
@@ -106,7 +151,6 @@ class EditEntryTag():
                 st.experimental_rerun()
         else:
             st.info("No record found.")
-
 
 add_entry_tag = EditEntryTag()
 add_entry_tag.create_page()
