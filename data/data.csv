@@ -1,0 +1,53 @@
+sector,subsector,subsubsector,subsubsubsector,subsubsubsubsector
+Livelihoods,,,,
+Livelioods,Natural capital,Natural assets,,
+Livelihoods,Natural capital,Usage rights,,
+Livelihoods,Human capital,Capacity and ability to work,,
+Livelihoods,Human capital,Skills & knowledge,,
+Livelihoods,Human capital,Education level /qualification,Literacy,
+Livelihoods,Human capital,Education level /qualification,Primary education,
+Livelihoods,Human capital,Education level /qualification,Secondary,
+Livelihoods,Human capital,Education level /qualification,Tertiary,
+Livelihoods,Human capital,Education level /qualification,Vocational training,
+Livelihoods,Social capital,,,
+Livelihoods,Physical capital,Productive assets / means of tranport,,
+Livelihoods,Physical capital,Non productive assets,,
+Livelihoods,Physical capital,Other HHs assets,,
+Livelihoods,Financial capital,Financial assets /savings,,
+Livelihoods,Financial capital,Financial assets /savings,Cash,
+Livelihoods,Financial capital,Financial assets /savings,Not cash,
+Livelihoods,Financial capital,Financial assets /savings,Not cash,Jewelry
+Livelihoods,Financial capital,Financial assets /savings,Not cash,Gold/silver
+Livelihoods,Financial capital,Financial assets /savings,Not cash,Other
+Livelihoods,Financial capital,Income,,
+Livelihoods,Financial capital,Income,Type/ source of income,
+Livelihoods,Financial capital,Income,Type/ source of income,Sales
+Livelihoods,Financial capital,Income,Type/ source of income,Assets earnings
+Livelihoods,Financial capital,Income,Type/ source of income,Pensions
+Livelihoods,Financial capital,Income,Type/ source of income,Allowances
+Livelihoods,Financial capital,Income,Type/ source of income,Remittances
+Livelihoods,Financial capital,Income,Type/ source of income,Humanitarian assistance
+Livelihoods,Financial capital,Income,Type/ source of income,Credits/loans/debt
+Livelihoods,Financial capital,Income,Type/ source of income,Mendicity
+Livelihoods,Financial capital,Income,Type/ source of income,Salaries and similar
+Livelihoods,Financial capital,Income,Type/ source of income,Spend savings
+Livelihoods,Financial capital,Income,Type/ source of income,Other
+Livelihoods,Financial capital,Transaction modality,,
+Livelihoods,Financial capital,Income suficiency,,
+Livelihoods,Financial capital,Expenditures,,
+Livelihoods,Financial capital,Expenditures,Amount,
+Livelihoods,Financial capital,Expenditures,Type,
+Livelihoods,Financial capital,Expenditures,Transaction modality,
+Livelihoods,Financial capital,Expenditures,Decision making,
+Livelihoods,Occupation,Type,,
+Livelihoods,Occupation,Type,Subsistence occupation,
+Livelihoods,Occupation,Type,Work in exchange,
+Livelihoods,Occupation,Type,Work without remuneration,
+Livelihoods,Occupation,Type,Work with remuneration,
+Livelihoods,Occupation,Type,No occupation,
+Livelihoods,Occupation,Work modality,Regular/irregular,
+Livelihoods,Occupation,Work modality,Stable/unstable,
+Livelihoods,Occupation,Work modality,Permanent/temporary,
+Livelihoods,Occupation,Work modality,Number of hours /days worked,
+Livelihoods,Occupation,Work modality,Contracted/ self-employed,
+Livelihoods,Occupation,Decision making,,
