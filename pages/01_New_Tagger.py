@@ -22,9 +22,9 @@ class TaggerPage:
 
         if self.submit_name:
             if self.db_write():
-                st.success("Successfully added")
+                st.success("Successfully added.")
             else:
-                st.error(f"{e}")
+                st.error("Error occurred while adding users.")
             
         
     def db_write(self):
@@ -34,7 +34,8 @@ class TaggerPage:
             app.session.commit()
             return True
         except Exception as e:
-            return e
+            st.write(f"{str(e)}")
+            return False
     
     def db_load_table(self):
         st.subheader("List of Taggers")
@@ -44,7 +45,8 @@ class TaggerPage:
         st.table(df)
 
 
-
-tagger_page = TaggerPage()
-tagger_page.create_page()
-tagger_page.db_load_table()
+admin_password_user_add = st.text_input("Enter Admin Password", type="password", key='passwd2')
+if admin_password_user_add == st.secrets["ADMIN_PASSWORD"]:
+    tagger_page = TaggerPage()
+    tagger_page.create_page()
+    tagger_page.db_load_table()
