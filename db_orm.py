@@ -21,6 +21,8 @@ class Sectors(Base):
     sector = Column(String)
     subsector = Column(String, nullable=True)
     subsubsector = Column(String, nullable=True)
+    subsubsubsector = Column(String, nullable=True)
+    subsubsubsubsector = Column(String, nullable=True)
     comment = Column(String, nullable=True)
     created_date = Column(Date, nullable=True)
     last_tagged_date = Column(Date, nullable=True)
