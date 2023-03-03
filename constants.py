@@ -1,20 +1,3 @@
-sector_lst = [
-    "Health",
-    "Agriculture",
-    "Protection",
-    "Cross"
-]
+import pandas as pd
 
-subsector_lst = [
-    "A",
-    "B",
-    "C",
-    "D"
-]
-
-subsubsector_lst = [
-    "A1",
-    "A2",
-    "A3",
-    "A4"
-]
+data_df = pd.read_csv("data.csv")
