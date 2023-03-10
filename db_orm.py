@@ -2,7 +2,7 @@ import os
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, String, Integer, Float, Boolean, Date
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy_utils import database_exists, create_database
 
 Base = declarative_base()
 
@@ -37,5 +37,7 @@ if __name__ == "__main__":
     db = os.environ.get("POSTGRES_DB")
 
     url = f"postgresql://{user}:{passwd}@{host}:{port}/{db}"
-    engine = create_engine(url)
+    engine = create_engine(url, echo=True)
+    if not database_exists(engine.url):
+        create_database(engine.url)
     Base.metadata.create_all(engine)
