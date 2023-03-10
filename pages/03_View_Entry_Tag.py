@@ -10,7 +10,7 @@ st.set_page_config(layout="wide")
 
 class ViewEntryTag():
     def __init__(self):
-        pass
+        self.rows_limit = 1_000
 
     def _get_mapping(self, df):
         id_name_mapping = {}
@@ -53,7 +53,11 @@ class ViewEntryTag():
         df = pd.read_sql_query(sa_query, app.engine)
         if len(df):
             df["assigned_to"] = df["assigned_to"].map(id_name_mapping)
-            st.dataframe(data=df, use_container_width=True)
+            if len(df) > self.rows_limit:
+                st.dataframe(data=df.sample(self.rows_limit), use_container_width=True)
+                st.subheader("Note: Showing randomly selected 1000 rows only.")
+            else:
+                st.dataframe(data=df, use_container_width=True)
             st.download_button(
                 label="Download data as CSV",
                 data=self.generate_csv(df),
