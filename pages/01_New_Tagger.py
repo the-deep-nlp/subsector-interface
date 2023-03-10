@@ -4,8 +4,6 @@ import db_orm
 import app
 from guidelines import guidelines
 
-st.set_page_config(layout="wide")
-
 class TaggerPage:
     def __init__(self):
         pass
