@@ -11,6 +11,12 @@ st.set_page_config(layout="wide")
 class ViewEntryTag():
     def __init__(self):
         self.rows_limit = 1_000
+        try:
+            app.engine.connect()
+            self.db_status = True
+        except Exception:
+            self.db_status = False
+            st.subheader("Database connection failed.")
 
     def _get_mapping(self, df):
         id_name_mapping = {}
@@ -70,4 +76,5 @@ class ViewEntryTag():
 
 
 view_entry_tag = ViewEntryTag()
-view_entry_tag.create_page()
+if view_entry_tag.db_status:
+    view_entry_tag.create_page()

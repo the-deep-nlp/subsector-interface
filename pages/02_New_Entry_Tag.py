@@ -13,7 +13,12 @@ st.set_page_config(layout="wide")
 
 class AddEntryTag():
     def __init__(self):
-        pass
+        try:
+            app.engine.connect()
+            self.db_status = True
+        except Exception:
+            self.db_status = False
+            st.subheader("Database connection failed.")
 
     def _get_list_of_users(self):
         df = pd.read_sql_table('Users', app.engine)
@@ -162,4 +167,5 @@ class AddEntryTag():
 
 
 add_entry_tag = AddEntryTag()
-add_entry_tag.create_page()
+if add_entry_tag.db_status:
+    add_entry_tag.create_page()

@@ -12,14 +12,16 @@ db = os.environ.get("POSTGRES_DB")
 
 st.set_page_config(layout="wide")
 
+guidelines()
+
 try:
     url = f"postgresql://{user}:{passwd}@{host}:{port}/{db}"
-    engine = create_engine(url)
+    engine = create_engine(url, connect_args={'connect_timeout': 5})
 
     Session = sessionmaker(bind=engine)
     session = Session()
+    engine.connect()
     # Load Guidelines
-    guidelines()
     st.subheader("Database connection established. Go through the guidelines and Navigate to other pages.")
 except Exception as e:
     st.subheader("Database connection failed.")
