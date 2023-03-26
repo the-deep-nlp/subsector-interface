@@ -35,9 +35,6 @@ class ValidateEntryTag():
         return df.to_csv().encode("utf-8")
 
     def create_page(self):
-        # Load Guidlines in the sidebar
-        guidelines()
-
         list_of_users, id_name_mapping = self._get_list_of_users()
         selected_user = st.selectbox(
             "Select the Tagger",
@@ -107,6 +104,10 @@ class ValidateEntryTag():
         else:
             st.info("No related data found in the database.")
 
-validate_entry_tag = ValidateEntryTag()
-if validate_entry_tag.db_status:
-    validate_entry_tag.create_page()
+# Load Guidlines in the sidebar
+guidelines()
+validation_password = st.text_input("Enter the Password", type="password", key='passwd3')
+if validation_password == st.secrets["VALIDATION_PASSWORD"]:
+    validate_entry_tag = ValidateEntryTag()
+    if validate_entry_tag.db_status:
+        validate_entry_tag.create_page()
