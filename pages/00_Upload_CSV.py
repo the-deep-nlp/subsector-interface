@@ -15,9 +15,11 @@ if admin_password_upload_page == st.secrets["ADMIN_PASSWORD"]:
 
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
-        
+
         df["created_date"] = date.today()
         df["complete"] = False
+        df["validated"] = False
+        df["reviewed"] = False
         st.dataframe(df)
         df.reset_index(drop=True, inplace=True)
         records_updated = df.to_sql(

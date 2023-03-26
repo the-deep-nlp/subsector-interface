@@ -12,6 +12,7 @@ db = os.environ.get("POSTGRES_DB")
 
 st.set_page_config(layout="wide")
 
+# Load Guidelines
 guidelines()
 
 try:
@@ -21,7 +22,6 @@ try:
     Session = sessionmaker(bind=engine)
     session = Session()
     engine.connect()
-    # Load Guidelines
     st.subheader("Database connection established. Go through the guidelines and Navigate to other pages.")
 except Exception as e:
     st.subheader("Database connection failed.")

@@ -6,11 +6,13 @@ from sqlalchemy_utils import database_exists, create_database
 
 Base = declarative_base()
 
+
 class Users(Base):
     __tablename__ = "Users"
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+
 
 class Sectors(Base):
     __tablename__ = "Sectors"
@@ -26,8 +28,12 @@ class Sectors(Base):
     comment = Column(String, nullable=True)
     created_date = Column(Date, nullable=True)
     last_tagged_date = Column(Date, nullable=True)
-    complete = Column(Boolean)
+    complete = Column(Boolean, default=False)
     assigned_to = Column(Integer, ForeignKey("Users.id"))
+    validated = Column(Boolean, default=False)
+    reviewed = Column(Boolean, default=False)
+    supervisor_comment = Column(String, nullable=True)
+
 
 if __name__ == "__main__":
     user = os.environ.get("POSTGRES_USER")
