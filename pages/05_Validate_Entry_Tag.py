@@ -106,8 +106,13 @@ class ValidateEntryTag():
 
 # Load Guidlines in the sidebar
 guidelines()
-validation_password = st.text_input("Enter the Password", type="password", key='passwd3')
-if validation_password == st.secrets["VALIDATION_PASSWORD"]:
+
+if not st.session_state.get("VALIDATION_PWD"):
+    validation_password = st.text_input("Enter the Password", type="password", key='passwd3')
+    if validation_password == st.secrets["VALIDATION_PASSWORD"]:
+        st.session_state["VALIDATION_PWD"] = validation_password
+
+if st.session_state.get("VALIDATION_PWD", None):
     validate_entry_tag = ValidateEntryTag()
     if validate_entry_tag.db_status:
         validate_entry_tag.create_page()

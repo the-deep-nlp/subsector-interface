@@ -6,12 +6,14 @@ from guidelines import guidelines
 
 class TaggerPage:
     def __init__(self):
-        pass
+        try:
+            app.engine.connect()
+            self.db_status = True
+        except Exception:
+            seld.db.status = False
+            st.subheader("Database connection failed.")
 
     def create_page(self):
-        # Load Guidlines in the sidebar
-        guidelines()
-
         st.header("Taggers")
         
         self.tagger_name = st.text_input("Tagger Name")
@@ -42,9 +44,16 @@ class TaggerPage:
         df.rename(columns={'name': 'Tagger Name'}, inplace=True)
         st.table(df)
 
+# Load Guidlines in the sidebar
+guidelines()
 
-admin_password_user_add = st.text_input("Enter Admin Password", type="password", key='passwd2')
-if admin_password_user_add == st.secrets["ADMIN_PASSWORD"]:
+if not st.session_state.get("ADMIN_PWD"):
+    admin_password_user_add_pwd = st.text_input("Enter Admin Password", type="password", key='passwd2')
+    if admin_password_user_add_pwd == st.secrets["ADMIN_PASSWORD"]:
+        st.session_state["ADMIN_PWD"] = admin_password_user_add_pwd
+
+if st.session_state.get("ADMIN_PWD", None):
     tagger_page = TaggerPage()
-    tagger_page.create_page()
-    tagger_page.db_load_table()
+    if tagger_page.db_status:
+        tagger_page.create_page()
+        tagger_page.db_load_table()

@@ -8,9 +8,13 @@ from guidelines import guidelines
 
 guidelines() # Load Guidlines in the sidebar
 
-admin_password_upload_page = st.text_input("Enter Admin Password", type="password", key='passwd1')
+if not st.session_state.get("ADMIN_PWD"):
+    admin_password_upload_page = st.text_input("Enter Admin Password", type="password", key='passwd1')
 
-if admin_password_upload_page == st.secrets["ADMIN_PASSWORD"]:
+    if admin_password_upload_page == st.secrets["ADMIN_PASSWORD"]:
+        st.session_state["ADMIN_PWD"] = admin_password_upload_page
+
+if st.session_state.get("ADMIN_PWD", None):
     uploaded_file = st.file_uploader("Choose a csv file")
 
     if uploaded_file is not None:
