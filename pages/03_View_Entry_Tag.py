@@ -37,7 +37,9 @@ class ViewEntryTag():
         return df.to_csv().encode("utf-8")
     
     def get_query_for_all(self, sa_table, check_complete, check_reviewed, check_validated):
-        if check_complete and check_reviewed and check_validated:
+        if ((check_complete and check_reviewed and check_validated) or
+            (check_complete and check_validated)):
+            check_reviewed = True # if second condition is true, enforce reviewed to True
             sa_query = sa.select([sa_table]).where(
                 and_(
                     sa_table.c.reviewed == check_reviewed,
