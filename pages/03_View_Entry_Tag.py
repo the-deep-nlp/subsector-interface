@@ -12,6 +12,8 @@ st.set_page_config(layout="wide")
 class ViewEntryTag():
     def __init__(self):
         self.rows_limit = 1_000
+        if "NEXT_COUNTER" not in st.session_state:
+            st.session_state["NEXT_COUNTER"] = 0
         try:
             app.engine.connect()
             self.db_status = True
@@ -86,18 +88,29 @@ class ViewEntryTag():
         # Load Guidlines in the sidebar
         guidelines()
 
+        def select_dropdown():
+            st.session_state["NEXT_COUNTER"] = 0
+
         list_of_users, id_name_mapping = self._get_list_of_users()
         selected_user = st.selectbox(
             "Select the Tagger",
-            list_of_users
+            list_of_users,
+            on_change=select_dropdown
         )
 
-        def callb():
+        def select_review():
+            st.session_state["NEXT_COUNTER"] = 0
+
+        def select_validate():
+            st.session_state["NEXT_COUNTER"] = 0
             if st.session_state.edit_validated:
                 st.session_state.edit_reviewed = True
+        
+        def select_radio():
+            st.session_state["NEXT_COUNTER"] = 0
 
         st.subheader("Filters")
-        select_options = st.radio("Choose the options", ("Show All", "Complete", "Incomplete"))
+        select_options = st.radio("Choose the options", ("Show All", "Complete", "Incomplete"), on_change=select_radio)
         if select_options == "Show All":
             check_show_all = True
         elif select_options == "Complete":
@@ -105,9 +118,9 @@ class ViewEntryTag():
             check_complete = True
             col1_reviewed, col2_validated = st.columns(2)
             with col1_reviewed:
-                check_reviewed = st.checkbox("Reviewed", key="edit_reviewed")
+                check_reviewed = st.checkbox("Reviewed", key="edit_reviewed", on_change=select_review)
             with col2_validated:
-                check_validated = st.checkbox("Validated", key="edit_validated", on_change=callb)
+                check_validated = st.checkbox("Validated", key="edit_validated", on_change=select_validate)
         else:
             check_show_all = False
             check_complete = False
@@ -157,8 +170,16 @@ class ViewEntryTag():
         if len(df):
             df["assigned_to"] = df["assigned_to"].map(id_name_mapping)
             if len(df) > self.rows_limit:
-                st.dataframe(data=df.sample(self.rows_limit), use_container_width=True)
-                st.subheader("Note: Showing randomly selected 1000 rows only.")
+                counter = st.session_state["NEXT_COUNTER"]
+                st.dataframe(
+                    data=df.iloc[counter*self.rows_limit:(counter+1)*self.rows_limit],
+                    use_container_width=True
+                )
+                next_button = st.button("Next")
+                if next_button:
+                    st.session_state["NEXT_COUNTER"] += 1
+                    st.experimental_rerun()
+                    
             else:
                 st.dataframe(data=df, use_container_width=True)
             st.download_button(
